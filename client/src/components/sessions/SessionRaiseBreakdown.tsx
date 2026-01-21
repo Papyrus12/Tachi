@@ -49,6 +49,9 @@ export default function SessionRaiseBreakdown({
 }) {
 	const game = sessionData.session.game;
 	const playtype = sessionData.session.playtype;
+	const gptConfig = GetGamePTConfig(game, playtype);
+	const enumMetrics = GetScoreMetrics(gptConfig, "ENUM");
+
 	const lampName = game === "ongeki" || game === "chunithm" ? "noteLamp" : "lamp";
 
 	const { user } = useContext(UserContext);
@@ -83,15 +86,31 @@ export default function SessionRaiseBreakdown({
 						<div className="col-12 col-lg-6 offset-lg-3">
 							<div className="d-none d-lg-flex justify-content-center">
 								<div className="btn-group">
-									<SelectButton value={view} setValue={setView} id={lampName}>
-										<Icon type="lightbulb" /> Lamps Only
-									</SelectButton>
+									{/* Always show "All" button */}
 									<SelectButton value={view} setValue={setView} id={null}>
 										<Icon type="bolt" /> All
 									</SelectButton>
-									<SelectButton value={view} setValue={setView} id="grade">
-										<Icon type="sort-alpha-up" /> Grades Only
-									</SelectButton>
+
+									{/* Dynamically show buttons for each enum metric */}
+									{enumMetrics.map((metric) => {
+										// For lamp metrics, use lightbulb icon
+										const isLamp =
+											metric === lampName ||
+											metric.toLowerCase().includes("lamp");
+										const icon = isLamp ? "lightbulb" : "sort-alpha-up";
+										const label = UppercaseFirst(metric) + "s Only";
+
+										return (
+											<SelectButton
+												key={metric}
+												value={view}
+												setValue={setView}
+												id={metric}
+											>
+												<Icon type={icon} /> {label}
+											</SelectButton>
+										);
+									})}
 								</div>
 							</div>
 						</div>
@@ -110,7 +129,6 @@ export default function SessionRaiseBreakdown({
 		</>
 	);
 }
-
 function SessionScoreStatBreakdown({
 	sessionData,
 	view,
@@ -136,6 +154,10 @@ function SessionScoreStatBreakdown({
 
 			const highestMetric: Record<string, Datapoint> = {};
 
+			console.log(`=== Processing metric: ${metric} ===`);
+			let skippedCount = 0;
+			let addedCount = 0;
+
 			for (const scoreInfo of sessionData.scoreInfo) {
 				const score = scoreMap.get(scoreInfo.scoreID);
 
@@ -146,10 +168,22 @@ function SessionScoreStatBreakdown({
 					continue;
 				}
 
+				// Debug logging
+				console.log(`Score ${scoreInfo.scoreID}:`, {
+					isNewScore: scoreInfo.isNewScore,
+					deltaValue: !scoreInfo.isNewScore ? scoreInfo.deltas[metric] : "N/A (new score)",
+					currentEnumIndex: (score.scoreData.enumIndexes as any)?.[metric],
+					currentEnumValue: (score.scoreData as any)[metric],
+				});
 				if (!scoreInfo.isNewScore && scoreInfo.deltas[metric] <= 0) {
 					// not a raise
+					skippedCount++;
+					console.log(`  ❌ Skipped - delta: ${scoreInfo.deltas[metric]}`);
 					continue;
 				}
+
+				addedCount++;
+				console.log(`  ✅ Added as raise`);
 
 				if (highestMetric[score.chartID]) {
 					const prevScore = highestMetric[score.chartID].score;
@@ -271,6 +305,12 @@ function ElementStatTable({
 }) {
 	const tableContents = useMemo(() => {
 		const conf = GetScoreMetricConf(gptConfig, metric) as ConfEnumScoreMetric<string>;
+
+		// Safety check for missing config
+		if (!conf || !conf.values) {
+			console.error(`No config found for metric: ${metric} in game: ${game}`);
+			return [];
+		}
 
 		// relements.. haha
 		const relevantElements = conf.values.slice(conf.values.indexOf(conf.minimumRelevantValue));

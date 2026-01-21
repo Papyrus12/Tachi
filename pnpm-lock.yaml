@@ -295,8 +295,8 @@ importers:
         specifier: ^5.6.1
         version: 5.6.1(@babel/core@7.1.0)(@types/react@17.0.13)(react-dom@17.0.2)(react@17.0.2)
       rg-stats:
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: github:Papyrus12/sekai-rg-stats-library#8f116aa
+        version: github.com/Papyrus12/sekai-rg-stats-library/8f116aa
       sync-fetch:
         specifier: ^0.3.1
         version: 0.3.1
@@ -659,8 +659,8 @@ importers:
         specifier: 3.1.2
         version: 3.1.2
       rg-stats:
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: github:Papyrus12/sekai-rg-stats-library#8f116aa
+        version: github.com/Papyrus12/sekai-rg-stats-library/8f116aa
       rimraf:
         specifier: 3.0.2
         version: 3.0.2
@@ -10234,14 +10234,6 @@ packages:
     resolution: {integrity: sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==}
     dev: false
 
-  /rg-stats@1.1.0:
-    resolution: {integrity: sha512-KQxSjnHXvb2B9Z+y/OwtUzStIjyXsn78c1XSF0t5L9G5UsVjyyO250eq4ih00X1WjvPRE9AtC4h38gBZEWClkw==}
-    dev: false
-
-  /rg-stats@1.0.0:
-    resolution: {integrity: sha512-Itt3OJden5riCkSY7o5whJTqK/DQNteJdQ+AXZ2upNNESOO/7JnWx+n/jJiSimR+XOE/rSggTxXLujHcE4Z0nA==}
-    dev: false
-
   /rimraf@2.4.5:
     resolution: {integrity: sha512-J5xnxTyqaiw06JjMftq7L9ouA448dw/E7dKghkP9WpKNuwmARNNg+Gk8/u5ryb9N/Yo2+z3MCwuqFK/+qPOPfQ==}
     deprecated: Rimraf versions prior to v4 are no longer supported
@@ -12015,4 +12007,10 @@ packages:
 
   /zod@3.20.2:
     resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false
+
+  github.com/Papyrus12/sekai-rg-stats-library/8f116aa:
+    resolution: {tarball: https://codeload.github.com/Papyrus12/sekai-rg-stats-library/tar.gz/8f116aa}
+    name: rg-stats
+    version: 1.1.0
     dev: false

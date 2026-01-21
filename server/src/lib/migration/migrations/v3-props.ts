@@ -50,6 +50,7 @@ function perToScore(goal: GoalDocument) {
 		case "pms":
 		case "itg":
 		case "arcaea":
+		case "proseka":
 			throw new Error(`Cannot convert this percent to score for game ${goal.game}`);
 	}
 }

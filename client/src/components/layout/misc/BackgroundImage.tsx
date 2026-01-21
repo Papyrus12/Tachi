@@ -12,7 +12,7 @@ export default function BackgroundImage({ styles }: { styles: LayoutStyles }) {
 					? `url(${background})`
 					: `url(${ToCDNURL("/game-banners/default")})`,
 				backgroundRepeat: "no-repeat",
-				backgroundPosition: "center",
+				backgroundPosition: "center 20%",
 				backgroundSize: "cover",
 				position: "absolute",
 				top: `${styles.headerHeight}px`,

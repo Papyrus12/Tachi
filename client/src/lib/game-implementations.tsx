@@ -23,6 +23,8 @@ import OngekiPlatinumCell from "components/tables/cells/OngekiPlatinumCell";
 import CHUNITHMLampCell from "components/tables/cells/CHUNITHMLampCell";
 import OngekiDamageCell from "components/tables/cells/OngekiDamageCell";
 import OngekiScoreRatingCell from "components/tables/cells/OngekiScoreRatingCell";
+import PROSEKAJudgementCell from "components/tables/cells/PROSEKAJudgementCell";
+import PROSEKALampCell from "components/tables/cells/PROSEKALampCell";
 import { bgc, RAINBOW_EX_GRADIENT, RAINBOW_GRADIENT, RAINBOW_SHINY_GRADIENT } from "./games/_util";
 import { BMS_14K_IMPL, BMS_7K_IMPL, PMS_IMPL } from "./games/bms-pms";
 import { IIDX_DP_IMPL, IIDX_SP_IMPL } from "./games/iidx";
@@ -153,6 +155,60 @@ export const GPT_CLIENT_IMPLEMENTATIONS: GPTClientImplementations = {
 					clearLamp={sc.scoreData.clearLamp}
 					noteLamp={sc.scoreData.noteLamp}
 					clearLampColour={GetEnumColour(sc, "clearLamp")}
+					noteLampColour={GetEnumColour(sc, "noteLamp")}
+				/>
+			</>
+		),
+		ratingCell: ({ sc, rating }) => <RatingCell score={sc} rating={rating} />,
+	},
+	"proseka:Single": {
+		sessionImportantScoreCount: 30,
+		enumIcons: {
+			noteLamp: "lightbulb",
+		},
+		classColours: {
+			colour: {
+				BLUE: bgc("var(--bs-info)", "var(--bs-light)"),
+				ORANGE: bgc("orange", "var(--bs-dark)"),
+				RED: bgc("red", "var(--bs-light)"),
+				YELLOW: bgc("yellow", "var(--bs-dark)"),
+				COPPER: bgc("sienna", "var(--bs-light)"),
+				SILVER: bgc("gray", "var(--bs-light)"),
+				GOLD: bgc("var(--bs-warning)", "var(--bs-dark)"),
+				PLATINUM: bgc("silver", "var(--bs-dark)"),
+				RAINBOW: RAINBOW_GRADIENT,
+				BLACK: bgc("black", "var(--bs-light)"),
+				GRAY: bgc("gray", "var(--bs-light)"),
+				WHITE: bgc("white", "var(--bs-dark)"),
+			},
+		},
+		enumColours: {
+			noteLamp: {
+				NONE: COLOUR_SET.gray,
+				"FULL COMBO": COLOUR_SET.darkGreen,
+				"ALL PERFECT": COLOUR_SET.vibrantBlue,
+			},
+		},
+		difficultyColours: {
+			EASY: COLOUR_SET.green,
+			NORMAL: COLOUR_SET.paleBlue,
+			HARD: COLOUR_SET.vibrantYellow,
+			EXPERT: COLOUR_SET.vibrantRed,
+			MASTER: COLOUR_SET.purple,
+			APPEND: COLOUR_SET.pink,
+		},
+		ratingSystems: [],
+		scoreHeaders: [
+			["EXScore", "EXScore", NumericSOV((x) => x.scoreData.percent)],
+			["Judgements", "Hits", NumericSOV((x) => x.scoreData.percent)],
+			["Lamp", "Lamp", NumericSOV((x) => x.scoreData.enumIndexes.noteLamp)],
+		],
+		scoreCoreCells: ({ sc }) => (
+			<>
+				<ScoreCell percent={sc.scoreData.percent} colour={COLOUR_SET.blue} />
+				<PROSEKAJudgementCell score={sc} />
+				<PROSEKALampCell
+					noteLamp={sc.scoreData.noteLamp}
 					noteLampColour={GetEnumColour(sc, "noteLamp")}
 				/>
 			</>

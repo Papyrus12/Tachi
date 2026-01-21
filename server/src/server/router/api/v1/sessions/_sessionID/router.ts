@@ -117,10 +117,16 @@ router.get("/folder-raises", async (req, res) => {
 	).map((e) => e.folderID);
 
 	// find all the active folder documents raised in this session.
+
 	const folders = await db.folders.find({
 		folderID: { $in: affectedFolderIDs },
 		inactive: false,
 	});
+
+	console.log("chartIDs:", chartIDs);
+	console.log("affectedFolderIDs:", affectedFolderIDs);
+	console.log("folders found:", folders);
+	// Replace lines 125-149 (the bestEnumMap building logic):
 
 	const bestEnumMap = new Map<string, ScoreDocument>();
 
@@ -150,6 +156,14 @@ router.get("/folder-raises", async (req, res) => {
 		}
 	}
 
+	console.log("=== ENUM METRICS ===");
+	console.log("enumScoreMetrics keys:", Object.keys(enumScoreMetrics));
+	console.log("bestEnumMap size:", bestEnumMap.size);
+	console.log("bestEnumMap contents:");
+	for (const [key, score] of bestEnumMap.entries()) {
+    	console.log(`  ${key}:`, score.scoreData.enumIndexes);
+	}
+
 	const raiseInfo: Array<{
 		folder: FolderDocument;
 		raisedCharts: Array<string>; // Array<chartID>;
@@ -162,12 +176,17 @@ router.get("/folder-raises", async (req, res) => {
 
 	await Promise.all(
 		folders.map(async (folder) => {
+			console.log(`\n=== Processing folder: ${folder.title} ===`);
+
 			// what was the grade and lamp distribution on this folder before the session?
 			const { chartIDs, cumulativeEnumDist } = await GetEnumDistForFolderAsOf(
 				session.userID,
 				folder.folderID,
 				session.timeStarted
 			);
+			
+        	console.log(`  Folder has ${chartIDs.length} charts`);
+        	console.log(`  cumulativeEnumDist:`, cumulativeEnumDist);
 
 			// what is the distribution of raises on this folder?
 			// NOTE: instead of storing an integer here
@@ -190,12 +209,13 @@ router.get("/folder-raises", async (req, res) => {
 			// }
 
 			for (const [metric, conf] of Object.entries(enumScoreMetrics)) {
+				console.log(`  \n  Processing metric: ${metric}`);
 				const metricDist: Record<string, Set<string>> = {};
 				const previousDist = cumulativeEnumDist[metric]!;
 
 				for (const chartID of chartIDs) {
 					const bestEnumOnThisChart = bestEnumMap.get(`${chartID}-${metric}`);
-
+					console.log(`    Chart ${chartID}: ${bestEnumOnThisChart ? 'FOUND in bestEnumMap' : 'NOT in bestEnumMap'}`);
 					if (!bestEnumOnThisChart) {
 						continue;
 					}

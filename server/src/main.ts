@@ -33,35 +33,53 @@ logger.info(`Log level is set to ${Environment.logLevel}.`, { bootInfo: true });
 logger.info(`Loading sequence documents...`, { bootInfo: true });
 
 async function RunOnInit() {
+	console.log("🟢 INIT: Starting InitSequenceDocs");
 	await InitSequenceDocs();
+	console.log("✅ INIT: InitSequenceDocs complete");
+	
+	console.log("🟢 INIT: Starting UpdateIndexes");
 	await UpdateIndexes(monkDB, false);
+	console.log("✅ INIT: UpdateIndexes complete");
 
+	console.log("🟢 INIT: Starting ApplyUnappliedMigrations");
 	await ApplyUnappliedMigrations();
+	console.log("✅ INIT: ApplyUnappliedMigrations complete");
 
+	console.log("🟢 INIT: Checking folder-chart-lookup");
 	await db["folder-chart-lookup"].findOne().then((r) => {
 		// If there are no folder chart lookups, initialise them.
 		if (!r) {
+			console.log("🟡 INIT: No folder-chart-lookup found, initializing...");
 			InitaliseFolderChartLookup().catch((err: unknown) => {
 				logger.error(`Failed to init folder-chart-lookup on first boot?`, { err });
 			});
+		} else {
+			console.log("✅ INIT: folder-chart-lookup exists");
 		}
 	});
 
 	if (Environment.nodeEnv === "dev") {
+		console.log("🟢 INIT: Checking for dev user");
 		const exists = await db.users.findOne({ id: 1 });
 
 		if (!exists) {
+			console.log("🟡 INIT: Creating admin user for dev");
 			logger.info("First time setup in LOCAL DEV: Creating an admin user for you.");
 			await AddNewUser("admin", "password", "admin@example.com", 1);
 			await db.users.update({ id: 1 }, { $set: { authLevel: UserAuthLevels.ADMIN } });
 			logger.info("Done! You have an admin user with password 'password'");
 		}
+		console.log("✅ INIT: Dev user check complete");
 	}
 
+	console.log("🟢 INIT: Loading default clients");
 	await LoadDefaultClients();
+	console.log("✅ INIT: LoadDefaultClients complete");
 
+	console.log("🟢 INIT: Testing internet connection");
 	try {
 		await fetch("https://example.com");
+		console.log("✅ INIT: Internet connection OK");
 	} catch (err) {
 		if (ServerConfig.ALLOW_RUNNING_OFFLINE === true) {
 			logger.warn(
@@ -77,9 +95,15 @@ async function RunOnInit() {
 			);
 		}
 	}
+	
+	console.log("🎉 INIT: RunOnInit COMPLETE - Server is ready!");
 }
 
-void RunOnInit();
+// Changed from void to catch errors
+RunOnInit().catch(err => {
+	console.error("❌ INIT FAILED:", err);
+	logger.crit("RunOnInit failed!", { err }, () => process.exit(1));
+});
 
 let instance: http.Server | https.Server;
 

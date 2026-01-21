@@ -148,9 +148,21 @@ app.use((req, res, next) => {
 	next();
 });
 
+// DEBUG: Log incoming requests
+app.use((req, res, next) => {
+	console.log("🔵 INCOMING REQUEST:", req.method, req.url);
+	next();
+});
+
 app.use(RequestLoggerMiddleware);
 
 app.use("/", mainRouter);
+
+// DEBUG: Log if request falls through
+app.use((req, res, next) => {
+	console.log("🔴 REQUEST FELL THROUGH - NO HANDLER FOUND");
+	next();
+});
 
 // The SERVE_OWN_CDN option means that our /cdn path has to be hosted by us. In production,
 // this is not the case (we have a dedicated nginx box for it running in a separate process).
@@ -181,6 +193,8 @@ interface ExpressJSONErr extends SyntaxError {
 }
 
 const MAIN_ERR_HANDLER: express.ErrorRequestHandler = (err, req, res, _next) => {
+	console.log("🔥 ERROR HANDLER HIT:", err.message);
+	
 	// this use of instanceof is fine.
 	// eslint-disable-next-line cadence/no-instanceof
 	if (err instanceof SyntaxError) {

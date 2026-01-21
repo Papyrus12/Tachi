@@ -141,6 +141,7 @@ const scoreMovers: ScoreMovers = {
 		lamp: old.lamp as any,
 		optional: old.hitMeta,
 	}),
+	"proseka:Single": NEUTRAL_MV,
 };
 
 const logger = CreateLogCtx(__filename);
