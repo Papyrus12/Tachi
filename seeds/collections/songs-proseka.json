@@ -5267,7 +5267,7 @@
 	},
 	{
 		"altTitles": [
-			"The Intense Voice of Hatsune Miku"
+			"The Intense Voice of Hatsune Miku  [Full]"
 		],
 		"artist": "cosMo@暴走P",
 		"data": {
@@ -5275,10 +5275,10 @@
 		},
 		"id": 388,
 		"searchTerms": [
-			"theintensevoiceofhatsunemiku",
+			"theintensevoiceofhatsunemikufull",
 			""
 		],
-		"title": "初音ミクの激唱"
+		"title": "初音ミクの激唱 [Full]"
 	},
 	{
 		"altTitles": [
@@ -8755,14 +8755,14 @@
 		"title": "い〜やい〜やい〜や"
 	},
 	{
-		"altTitles": [],
+		"altTitles": ["I want to be a monster"],
 		"artist": "Sakuzyo",
 		"data": {
 			"genre": "original"
 		},
 		"id": 671,
 		"searchTerms": [
-			""
+			"kaijuninaritai"
 		],
 		"title": "怪獣になりたい"
 	},
