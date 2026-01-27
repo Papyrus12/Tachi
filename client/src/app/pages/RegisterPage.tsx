@@ -16,7 +16,7 @@ import { UseFormik } from "types/react";
 import LoginPageLayout from "components/layout/LoginPageLayout";
 
 // seconds it takes for a user to actually read the rules.
-const RULES_READ_TIME = Number(process.env.VITE_RULES_READ_TIME) || 30;
+const RULES_READ_TIME = Number(process.env.VITE_RULES_READ_TIME) || 15;
 
 export default function RegisterPage() {
 	useSetSubheader("Register");
@@ -42,7 +42,6 @@ export default function RegisterPage() {
 			username: "",
 			"!password": "",
 			confPassword: "",
-			inviteCode: urlParams.get("inviteCode") ?? "",
 			email: "",
 			captcha: "temp",
 		},
@@ -68,7 +67,6 @@ export default function RegisterPage() {
 					method: "POST",
 					body: JSON.stringify({
 						"!password": values["!password"],
-						inviteCode: values.inviteCode,
 						username: values.username.trim(),
 						email: values.email,
 						captcha: values.captcha,
@@ -206,7 +204,6 @@ function RegisterForm({
 		username: string;
 		"!password": string;
 		confPassword: string;
-		inviteCode: string;
 		email: string;
 		captcha: string;
 	}>;
@@ -262,18 +259,6 @@ function RegisterForm({
 					onChange={formik.handleChange}
 				/>
 			</Form.Group>
-			{ClientConfig.MANDATE_LOGIN && (
-				<Form.Group>
-					<Form.Label>Invite Code</Form.Label>
-					<Form.Control
-						tabIndex={5}
-						type="text"
-						id="inviteCode"
-						value={formik.values.inviteCode}
-						onChange={formik.handleChange}
-					/>
-				</Form.Group>
-			)}
 
 			{process.env.VITE_RECAPTCHA_KEY && (
 				<ReCAPTCHA

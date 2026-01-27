@@ -5,7 +5,6 @@ import PlaytypeSelect from "app/pages/dashboard/games/_game/PlaytypeSelect";
 import UserGamesPage from "app/pages/dashboard/users/UserGamesPage";
 import UserImportsPage from "app/pages/dashboard/users/UserImportsPage";
 import UserIntegrationsPage from "app/pages/dashboard/users/UserIntegrationsPage";
-import UserInvitesPage from "app/pages/dashboard/users/UserInvitesPage";
 import UserSettingsPage from "app/pages/dashboard/users/UserSettingsPage";
 import LeaderboardsPage from "app/pages/dashboard/users/games/_game/_playtype/LeaderboardsPage";
 import OverviewPage from "app/pages/dashboard/users/games/_game/_playtype/OverviewPage";
@@ -131,11 +130,6 @@ function UserProfileRoutes({ reqUser }: { reqUser: UserDocument }) {
 			<Route path="/u/:userID/imports">
 				<RequireAuthAsUserParam>
 					<UserImportsPage reqUser={reqUser} />
-				</RequireAuthAsUserParam>
-			</Route>
-			<Route exact path="/u/:userID/invites">
-				<RequireAuthAsUserParam>
-					<UserInvitesPage reqUser={reqUser} />
 				</RequireAuthAsUserParam>
 			</Route>
 		</>
