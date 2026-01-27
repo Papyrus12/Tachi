@@ -24,15 +24,20 @@ export default function PrivacyPolicyPage() {
 			<li>Manage our score database</li>
 			<li>Provide you with statistics</li>
 			<h2>How do we store your data?</h2>
-			<p>{TachiConfig.NAME} securely stores your data on our server in Norway.</p>
+			<p>{TachiConfig.NAME} securely stores your data on our server in Frankfurt, Germany.</p>
 			<p>
 				{TachiConfig.NAME} will keep your email for as long as you use the service. If you
 				elect to terminate your account, your data will be securely erased.
 			</p>
+			<h2>International data transfers</h2>
+			<p>
+				Your data is stored and processed within the European Union.
+				We do not transfer your personal data outside the EU or EEA.
+			</p>
 			<h2>Marketing</h2>
 			<p>
-				No advertising agencies are associated with this site, nor is your information given
-				to any of them.
+				We do not use your personal data for marketing purposes
+				and do not share it with advertisers.
 			</p>
 			<h2>What are your data protection rights?</h2>
 			<p>
@@ -68,9 +73,18 @@ export default function PrivacyPolicyPage() {
 				or directly to you, under certain conditions.
 			</p>
 			<p>
-				If you make a request, providing I am not dead, I have one month to respond to you.
+				If you make a request, we will respond within one month as required by GDPR.
+				In exceptional circumstances, this period may be extended in accordance with the law.
+			</p>
+			<p>
 				If you would like to exercise any of these rights, please contact me at this email:
-				zkldi.dev@gmail.com
+				support@sekaitachi.space (preferred), you'll get a response from me personally.
+			</p>
+			<h2>Data retention</h2>
+			<p>
+				We store your personal data only for as long as necessary to provide our services.
+				Your account data is kept while your account is active.
+				After account deletion, your personal data is permanently removed unless we are required by law to retain it.
 			</p>
 			<h2>Cookies</h2>
 			<p>
@@ -90,6 +104,7 @@ export default function PrivacyPolicyPage() {
 				Functionality - {TachiConfig.NAME} uses these cookies so that we recognize you on
 				our website and remember your previously selected preferences. These could include
 				what language you prefer and location you are in. No third-party cookies are used.
+				We do not use analytics, tracking, or advertising cookies.
 			</p>
 			<h2>How to manage cookies</h2>
 			<p>
@@ -97,6 +112,13 @@ export default function PrivacyPolicyPage() {
 				to remove cookies from your browser. However, in a few cases, some of our website
 				features may not function as a result.
 			</p>
+			<h2>Legal basis for processing</h2>
+			<p>
+				We process your personal data under Article 6 of GDPR based on:
+			</p>
+			<li>Your consent</li>
+			<li>Performance of a contract (providing our service)</li>
+			<li>Legitimate interests</li>
 			<h2>Privacy policies of other websites</h2>
 			<p>
 				The {TachiConfig.NAME} website contains links to other websites. Our privacy policy
@@ -106,7 +128,7 @@ export default function PrivacyPolicyPage() {
 			<h2>Changes to our privacy policy</h2>
 			<p>
 				{TachiConfig.NAME} keeps its privacy policy under regular review and places any
-				updates on this web page. This privacy policy was last updated on 15 September 2020.
+				updates on this web page. This privacy policy was last updated on 27 January 2026.
 			</p>
 			<h2>How to contact us</h2>
 			<p>
@@ -114,15 +136,23 @@ export default function PrivacyPolicyPage() {
 				hold on you, or you would like to exercise one of your data protection rights,
 				please do not hesitate to contact us.
 			</p>
-			<p>Email us at: zk@tachi.ac</p>
+			<h2>Data Controller</h2>
+			<p>
+			The data controller responsible for your personal data is:
+			</p>
+			<p>
+			{TachiConfig.NAME}<br/>
+			Contact: support@sekaitachi.space<br/>
+			Location: Poland
+			</p>
 			<h2>How to contact the appropriate authority</h2>
 			<p>
 				Should you wish to report a complaint or if you feel that {TachiConfig.NAME} has not
-				addressed your concern in a satisfactory manner, you may contact the Information
-				Commissioner's Office.
+				addressed your concern in a satisfactory manner, you may contact the Urząd Ochrony Danych Osobowych
+				(the Data Protection Authority).
 			</p>
 			<p>
-				Website: <ExternalLink href="https://ico.org.uk">https://ico.org.uk</ExternalLink>
+				Website: <ExternalLink href="https://uodo.gov.pl/">https://uodo.gov.pl/</ExternalLink>
 			</p>
 		</div>
 	);
