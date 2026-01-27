@@ -50,3 +50,4 @@ failed-tests.log
 I_HAVE_BOOTSTRAPPED_OK
 # new bootstrap flag
 BOOTSTRAP_OK
+mkdocs-material/
