@@ -93,8 +93,7 @@ router.post(
 			key: "string",
 			value: p.gte(0),
 			mode: p.isIn("single", "absolute", "proportion"),
-			comparator: p.isIn("gte", "lte", "eq"), // ADD THIS LINE
-			countNum: (self, parent) => {
+			comparator: p.optional(p.isIn("gte", "lte", "eq")),
 				if (parent.mode === "single") {
 					return (
 						self === undefined ||
@@ -135,10 +134,7 @@ router.post(
 				return "Unknown charts.type.";
 			},
 		},
-	},
-	undefined,
-	{ allowExcessKeys: true }
-),
+	}),
 	async (req, res) => {
 		const { user, game, playtype } = GetUGPT(req);
 
