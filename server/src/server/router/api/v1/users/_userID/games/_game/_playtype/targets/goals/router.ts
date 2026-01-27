@@ -93,7 +93,7 @@ router.post(
 			key: "string",
 			value: p.gte(0),
 			mode: p.isIn("single", "absolute", "proportion"),
-			"*comparator": p.isIn("gte", "lte", "eq"), // ADD THIS LINE
+			comparator: p.isIn("gte", "lte", "eq"), // ADD THIS LINE
 			countNum: (self, parent) => {
 				if (parent.mode === "single") {
 					return (
