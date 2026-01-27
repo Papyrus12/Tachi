@@ -19,7 +19,7 @@ export function Footer() {
 			}
 
 			if (!r.success) {
-				setServerVersion("Error Fetching data!");
+				setServerVersion("Error Fetching data! Status call is broken");
 			} else {
 				setServerVersion(r.body.version);
 			}
@@ -33,7 +33,7 @@ export function Footer() {
 					<div className="order-2 order-lg-0 mt-2 m-lg-0">
 						<Nav.Link
 							as={ExternalLink}
-							href="https://en.wikipedia.org/wiki/Dummy_(album)"
+							href="https://en.wikipedia.org/wiki/Hatsune_Miku:_Colorful_Stage!"
 							className={linkClassNames}
 						>
 							{serverVersion}
@@ -50,7 +50,7 @@ export function Footer() {
 						</Nav.Link>
 						<Nav.Link
 							as={ExternalLink}
-							href="https://docs.tachi.ac/wiki/rules"
+							href="https://rules.sekaitachi.space/"
 							className={linkClassNames}
 						>
 							Rules
@@ -74,7 +74,7 @@ export function Footer() {
 						)}
 						<Nav.Link
 							as={ExternalLink}
-							href="https://github.com/zkldi/Tachi"
+							href="https://github.com/Papyrus12/Tachi"
 							className={linkClassNames}
 						>
 							Source Code
@@ -84,7 +84,7 @@ export function Footer() {
 							href="https://docs.tachi.ac/"
 							className={linkClassNames}
 						>
-							Developer Documentation
+							Developer Documentation (Tachi)
 						</Nav.Link>
 					</div>
 				</Container>

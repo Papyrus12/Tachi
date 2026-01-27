@@ -23,7 +23,7 @@ if (!semverInfo) {
 	);
 }
 
-let commit: string | null = null;
+let commit: string | null = "sekai";
 
 try {
 	if (Environment.commitHash) {
