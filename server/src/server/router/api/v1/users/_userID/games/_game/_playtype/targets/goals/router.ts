@@ -136,7 +136,10 @@ router.post(
 				return "Unknown charts.type.";
 			},
 		},
-	}),
+	},
+	undefined,
+	{ allowExcessKeys: true }
+),
 	async (req, res) => {
 		const { user, game, playtype } = GetUGPT(req);
 
