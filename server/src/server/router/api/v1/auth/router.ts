@@ -177,7 +177,6 @@ router.post(
 			username:
 				"Usernames must be between 3 and 20 characters long, can only contain alphanumeric characters and cannot start with a number.",
 			email: "Invalid email.",
-			inviteCode: "Invalid invite code.",
 			captcha: "Please fill out the captcha.",
 		},
 		undefined,
@@ -201,13 +200,6 @@ router.post(
 
 		// force lowercase for emails to avoid case-confusion in lookups...
 		body.email = body.email.toLowerCase();
-
-		if (body.inviteCode === undefined && ServerConfig.INVITE_CODE_CONFIG) {
-			return res.status(400).json({
-				success: false,
-				description: `No invite code given, yet the server uses invites.`,
-			});
-		}
 
 		logger.verbose(`received register request with username ${body.username} (${req.ip})`);
 
@@ -268,14 +260,6 @@ router.post(
 						},
 					}
 				);
-
-				if (!inviteCodeDoc) {
-					logger.info(`Invalid invite code given: ${body.inviteCode}.`);
-					return res.status(401).json({
-						success: false,
-						description: `This invite code is not valid.`,
-					});
-				}
 
 				logger.info(`Consumed invite ${inviteCodeDoc.code}.`);
 			}
