@@ -64,6 +64,7 @@ interface GoalCriteria<GPT extends GPTString> {
 	key: string;
 
 	value: number;
+	comparator: "gte" | "lte" | "eq";
 }
 
 export interface GoalSingleCriteria<GPT extends GPTString> extends GoalCriteria<GPT> {

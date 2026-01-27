@@ -156,7 +156,20 @@ export function RenderGoalCriteriaPicker({
 						<option value={e}>{UppercaseFirst(e)}</option>
 					))}
 				</Select>
-				is greater than or equal to
+				<Select
+					inline
+					value={criteria.comparator || "gte"}
+					setValue={(comparator) => {
+						setCriteria({
+							...criteria,
+							comparator: comparator as "gte" | "lte" | "eq",
+						});
+					}}
+				>
+					<option value="gte">is greater than or equal to</option>
+					<option value="lte">is less than or equal to</option>
+					<option value="eq">is equal to</option>
+				</Select>
 				<div className="form-group" style={{ display: "inline" }}>
 					<CriteriaValuePicker
 						criteria={criteria}
@@ -185,6 +198,7 @@ export function RenderGoalCriteriaPicker({
 									mode: "single",
 									key: criteria.key,
 									value: criteria.value,
+									comparator: criteria.comparator,
 								});
 							} else {
 								setCriteria({

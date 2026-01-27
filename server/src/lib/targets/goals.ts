@@ -32,6 +32,19 @@ export interface EvaluatedGoalReturn {
 	outOfHuman: string;
 }
 
+function checkGoalAchieved(
+	progress: number,
+	outOf: number,
+	comparator: "gte" | "lte" | "eq" = "gte"
+): boolean {
+	switch (comparator) {
+		case "gte": return progress >= outOf;
+		case "lte": return progress <= outOf;
+		case "eq": return progress === outOf;
+		default: return progress >= outOf;
+	}
+}
+
 /**
  * Creates a goalID from a goals charts and criteria.
  *
@@ -52,6 +65,15 @@ export function CreateGoalID(
 	return `G${fjsh.hash({ charts, criteria, game, playtype }, "sha256")}`;
 }
 
+// Add helper function at the top of the file or import it
+function getMongoComparator(comparator: "gte" | "lte" | "eq" = "gte") {
+	switch (comparator) {
+		case "gte": return "$gte";
+		case "lte": return "$lte";
+		case "eq": return "$eq";
+		default: return "$gte";
+	}
+}
 export async function EvaluateGoalForUser(
 	goal: GoalDocument,
 	userID: integer,
@@ -79,17 +101,16 @@ export async function EvaluateGoalForUser(
 	}
 
 	// lets configure a "base" query for our requests.
+	// Then update the query:
+	const mongoOperator = getMongoComparator(goal.criteria.comparator);
+
 	const scoreQuery: FilterQuery<PBScoreDocument> = {
 		userID,
 		game: goal.game,
 		playtype: goal.playtype,
-
-		// normally, this would be a VERY WORRYING line of code, but goal.criteria.key is guaranteed to be
-		// within a specific set of fields.
-		[scoreDataKey]: { $gte: goal.criteria.value },
+		[scoreDataKey]: { [mongoOperator]: goal.criteria.value },
 		chartID: { $in: chartIDs },
 	};
-
 	switch (goal.criteria.mode) {
 		case "single": {
 			const res = await db["personal-bests"].findOne(scoreQuery);
@@ -178,7 +199,7 @@ export async function EvaluateGoalForUser(
 			const userCount = await db["personal-bests"].count(scoreQuery);
 
 			return {
-				achieved: userCount >= count,
+				achieved: checkGoalAchieved(userCount, count, goal.criteria.comparator),
 				progress: userCount,
 				outOf: count,
 				progressHuman: userCount.toString(),
