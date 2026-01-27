@@ -123,7 +123,7 @@ export async function EvaluateGoalForUser(
 				: res.scoreData[goal.criteria.key];
 
 				return {
-					achieved: checkGoalAchieved(progressValue, goal.criteria.value, goal.criteria.comparator),
+					achieved: true,
 					outOf: goal.criteria.value,
 					progress: progressValue,
 					outOfHuman,
