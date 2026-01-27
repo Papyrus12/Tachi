@@ -118,15 +118,14 @@ export async function EvaluateGoalForUser(
 			const outOfHuman = HumaniseGoalOutOf(gptString, goal.criteria.key, goal.criteria.value);
 
 			if (res) {
+				const progressValue = scoreConf.type === "ENUM"
+				? res.scoreData.enumIndexes[goal.criteria.key]
+				: res.scoreData[goal.criteria.key];
+
 				return {
-					achieved: true,
+					achieved: checkGoalAchieved(progressValue, goal.criteria.value, goal.criteria.comparator),
 					outOf: goal.criteria.value,
-					progress:
-						scoreConf.type === "ENUM"
-							? // @ts-expect-error this is always correct but the typesystem is rightfully concerned
-							  res.scoreData.enumIndexes[goal.criteria.key]
-							: // @ts-expect-error see above
-							  res.scoreData[goal.criteria.key],
+					progress: progressValue,
 					outOfHuman,
 					progressHuman: HumaniseGoalProgress(
 						gptString,
@@ -145,9 +144,11 @@ export async function EvaluateGoalForUser(
 				playtype: goal.playtype,
 				chartID: { $in: chartIDs },
 			};
+			
+			const sortDirection = goal.criteria.comparator === "lte" ? 1 : -1;
 
 			const nextBestScore = await db["personal-bests"].findOne(nextBestQuery, {
-				sort: { [scoreDataKey]: -1 },
+				sort: { [scoreDataKey]: sortDirection },
 			});
 
 			// user has no scores on any charts in this set.
@@ -160,17 +161,16 @@ export async function EvaluateGoalForUser(
 					progressHuman: "NO DATA",
 				};
 			}
+			
+			const progressValue = scoreConf.type === "ENUM"
+			? nextBestScore.scoreData.enumIndexes[goal.criteria.key]
+			: nextBestScore.scoreData[goal.criteria.key];
 
 			return {
-				achieved: false,
+				achieved: checkGoalAchieved(progressValue, goal.criteria.value, goal.criteria.comparator),
 				outOf: goal.criteria.value,
 				outOfHuman,
-				progress:
-					scoreConf.type === "ENUM"
-						? // @ts-expect-error this is always correct but the typesystem is rightfully concerned
-						  nextBestScore.scoreData.enumIndexes[goal.criteria.key]
-						: // @ts-expect-error see above
-						  nextBestScore.scoreData[goal.criteria.key],
+				progress: progressValue,
 				progressHuman: HumaniseGoalProgress(
 					gptString,
 					goal.criteria.key,
