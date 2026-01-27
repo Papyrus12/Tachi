@@ -148,18 +148,6 @@ export function UserBottomNav({ baseUrl, reqUser }: { baseUrl: string; reqUser: 
 				Imports
 			</Navbar.Item>
 		);
-
-		// If mandates login, assume that we also use invite codes.
-		// I'm sure we could set up an elaborate way of doing this by
-		// querying the server, but I just don't care.
-		if (ClientConfig.MANDATE_LOGIN) {
-			navItems.push(
-				<Navbar.Item key="invites" to={`${baseUrl}/invites`}>
-					Invites
-				</Navbar.Item>
-			);
-		}
-
 		navItems.push(
 			<Navbar.Item key="settings" to={`${baseUrl}/settings`}>
 				Profile Settings
